@@ -1,0 +1,6 @@
+../worker/src/main.c:13:  Function name 'is_prime' should use CamelCase and start with an uppercase letter.  [readability/naming] [4]
+../worker/src/main.c:13:  Use int16_t/int64_t/etc, rather than the C type long  [runtime/int] [4]
+../worker/src/main.c:15:  Use int16_t/int64_t/etc, rather than the C type long  [runtime/int] [4]
+../worker/src/main.c:37:  Use int16_t/int64_t/etc, rather than the C type long  [runtime/int] [4]
+Done processing ../worker/src/main.c
+Total errors found: 4

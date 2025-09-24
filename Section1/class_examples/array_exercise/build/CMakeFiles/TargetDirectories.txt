@@ -1,0 +1,3 @@
+/home/alejandro/class_examples/2025_F/array_exercise/build/CMakeFiles/modify_array.dir
+/home/alejandro/class_examples/2025_F/array_exercise/build/CMakeFiles/edit_cache.dir
+/home/alejandro/class_examples/2025_F/array_exercise/build/CMakeFiles/rebuild_cache.dir
