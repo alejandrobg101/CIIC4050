@@ -1,0 +1,27 @@
+=== TICKET OFFICE STARTING ===
+Initializing shared memory with 100 tickets...
+Shared memory initialized successfully!
+Starting ticket office reports...
+
+=== TICKET OFFICE SHUTTING DOWN ===
+s: 36
+============================
+
+TICKET REPORT:
+Available tickets: 0
+STATUS: SOLD OUT...
+Total transactions: 36
+============================
+
+TICKET REPORT:
+Available tickets: 0
+STATUS: SOLD OUT...
+Total transactions: 36
+============================
+
+TICKET REPORT:
+Available tickets: 0
+STATUS: SOLD OUT...
+Total transactions: 36
+============================
+

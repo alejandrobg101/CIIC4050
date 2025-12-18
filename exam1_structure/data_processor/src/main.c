@@ -1,140 +1,129 @@
+
 #define _XOPEN_SOURCE 700
 
+#include <errno.h>
 #include <fcntl.h>
 #include <mqueue.h>
 #include <signal.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/ipc.h>
 #include <sys/mman.h>
+#include <sys/shm.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
 
 #define SHM_NAME "/mem_block_exam_1"
 #define MQ_NAME "/mq_exam_1"
-#define NUM_ELEMENTS 10
-#define MAX_SIGNALS 5
 
 static volatile sig_atomic_t signal_count = 0;
 
-void Signal_handler(int sig) {
+void Sigusr2_handler(int signum) {
   printf("Data Processor: new data available\n");
-  signal_count++;
+  signal_count++;  // change
 }
 
 int main() {
-  // Set up SIGUSR2 signal handler
-  struct sigaction sa;
-  sa.sa_handler = Signal_handler;
-  sa.sa_flags = 0;
-  sigemptyset(&sa.sa_mask);
-  if (sigaction(SIGUSR2, &sa, NULL) == -1) {
-    perror("sigaction");
-    exit(EXIT_FAILURE);
+  int fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, 0666);
+  ftruncate(fd, 10 * sizeof(double));  // change
+  double *shm_ptr = mmap(0, 10 * sizeof(double), PROT_READ | PROT_WRITE,
+                         MAP_SHARED, fd, 0);  // change
+  if (shm_ptr == MAP_FAILED) {
+    perror("mmap failed");
+    shm_unlink(SHM_NAME);  // change
+    exit(1);
   }
 
-  // Create shared memory
-  int shm_fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, 0666);
-  if (shm_fd == -1) {
-    perror("shm_open");
-    exit(EXIT_FAILURE);
-  }
-
-  if (ftruncate(shm_fd, NUM_ELEMENTS * sizeof(double)) == -1) {
-    perror("ftruncate");
-    shm_unlink(SHM_NAME);
-    exit(EXIT_FAILURE);
-  }
-
-  double *shm_data = mmap(NULL, NUM_ELEMENTS * sizeof(double),
-                          PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-  if (shm_data == MAP_FAILED) {
-    perror("mmap");
-    shm_unlink(SHM_NAME);
-    exit(EXIT_FAILURE);
-  }
-
-  // Create message queue
-  struct mq_attr attr = {0};
+  struct mq_attr attr;
+  attr.mq_flags = 0;
   attr.mq_maxmsg = 10;
   attr.mq_msgsize = 80;
+  attr.mq_curmsgs = 0;
 
-  mqd_t mq = mq_open(MQ_NAME, O_CREAT | O_WRONLY, 0666, &attr);
-  if (mq == -1) {
-    perror("mq_open");
-    munmap(shm_data, NUM_ELEMENTS * sizeof(double));
-    shm_unlink(SHM_NAME);
+  mqd_t queue_os = mq_open(MQ_NAME, O_CREAT | O_WRONLY, 0666, &attr);
+  if (queue_os == -1) {
+    perror("error in open");
+    munmap(shm_ptr, 10 * sizeof(double));  // change
+    shm_unlink(SHM_NAME);                  // change
     exit(EXIT_FAILURE);
   }
 
-  // Fork data_creator process
-  pid_t creator_pid = fork();
-  if (creator_pid == -1) {
-    perror("fork creator");
+  double arr_pid = getpid();
+  int status;
+
+  struct sigaction sa;
+  sa.sa_handler = Sigusr2_handler;
+  sa.sa_flags = 0;                            // change
+  sigemptyset(&sa.sa_mask);                   // change
+  if (sigaction(SIGUSR2, &sa, NULL) == -1) {  
+    perror("sigaction");                      // change
+    munmap(shm_ptr, 10 * sizeof(double));     // change
+    shm_unlink(SHM_NAME);                     // change
+    mq_close(queue_os);                       // change
+    mq_unlink(MQ_NAME);                       // change
+    exit(EXIT_FAILURE);                       // change
+  }
+
+  pid_t pid1 = fork();  // change
+  if (pid1 == 0) {
+    printf("Process 1 working: %d\n", pid1);
+    char buffer[14];
+    snprintf(buffer, sizeof(buffer), "%d", (int)arr_pid);  // change
+    execl("../test/data_creator", "data_creator", SHM_NAME, buffer, NULL);
+    perror("execl worker1");
+    exit(EXIT_FAILURE);
+  } else if (pid1 < 0) {
+    perror("fork worker1");
+    munmap(shm_ptr, 10 * sizeof(double));  // change
+    shm_unlink(SHM_NAME);                  // change
+    mq_close(queue_os);                    // change
+    mq_unlink(MQ_NAME);                    // change
     exit(EXIT_FAILURE);
   }
 
-  if (creator_pid == 0) {
-    // Child process: data_creator
-    char pid_str[16];
-    snprintf(pid_str, sizeof(pid_str), "%d", getppid());
-    execl("./data_creator", "data_creator", SHM_NAME, pid_str, NULL);
-    perror("execl data_creator");
+  pid_t pid2 = fork();
+  if (pid2 == 0) {
+    printf("Process 2 working: %d\n", pid2);
+    execl("../test/data_logger", "data_logger", MQ_NAME, NULL);
+    perror("execl worker2");
+    exit(EXIT_FAILURE);
+  } else if (pid2 < 0) {
+    perror("fork worker2");
+    kill(pid1, SIGTERM);                   // change
+    waitpid(pid1, NULL, 0);                // change
+    munmap(shm_ptr, 10 * sizeof(double));  // change
+    shm_unlink(SHM_NAME);                  // change
+    mq_close(queue_os);                    // change
+    mq_unlink(MQ_NAME);                    // change
     exit(EXIT_FAILURE);
   }
 
-  // Fork data_logger process
-  pid_t logger_pid = fork();
-  if (logger_pid == -1) {
-    perror("fork logger");
-    kill(creator_pid, SIGTERM);
-    waitpid(creator_pid, NULL, 0);
-    exit(EXIT_FAILURE);
-  }
-
-  if (logger_pid == 0) {
-    // Child process: data_logger
-    execl("./data_logger", "data_logger", MQ_NAME, NULL);
-    perror("execl data_logger");
-    exit(EXIT_FAILURE);
-  }
-
-  // Main loop to process signals
-  while (signal_count < MAX_SIGNALS) {
-    pause();  // Wait for SIGUSR2
-
-    if (signal_count <= MAX_SIGNALS) {
-      // Calculate average
-      double sum = 0.0;
-      for (int i = 0; i < NUM_ELEMENTS; i++) {
-        sum += shm_data[i];
-      }
-      double average = sum / NUM_ELEMENTS;
-
-      // Convert to string and send via message queue
-      char buffer[80];
-      snprintf(buffer, sizeof(buffer), "%f", average);
-
-      if (mq_send(mq, buffer, strlen(buffer) + 1, 0) == -1) {
-        perror("mq_send");
-        break;
-      }
+  while (signal_count < 5) {
+    pause();                        // change
+    double sum = 0.0;               // change
+    for (int i = 0; i < 10; i++) {  // change
+      sum += shm_ptr[i];            // change
+    }
+    double average = sum / 10;  // change
+    char buffer[80];
+    snprintf(buffer, sizeof(buffer), "%f", average);               // change
+    if (mq_send(queue_os, buffer, strlen(buffer) + 1, 0) == -1) {  // change
+      perror("mq_send");                                           // change
+      break;                                                       // change
     }
   }
 
-  // Cleanup
-  waitpid(creator_pid, NULL, 0);
-  waitpid(logger_pid, NULL, 0);
-
-  // Close and unlink shared memory
-  munmap(shm_data, NUM_ELEMENTS * sizeof(double));
-  close(shm_fd);
+  waitpid(pid1, &status, 0);
+  waitpid(pid2, &status, 0);
+  munmap(shm_ptr, 10 * sizeof(double));
+  close(fd);
   shm_unlink(SHM_NAME);
-
-  // Close and unlink message queue
-  mq_close(mq);
-  mq_unlink(MQ_NAME);
-
+  mq_close(queue_os);  // change
+  mq_unlink(MQ_NAME);  // change
   return 0;
 }

@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/horse_race.dir/src/main.c.o -o horse_race  -lm 

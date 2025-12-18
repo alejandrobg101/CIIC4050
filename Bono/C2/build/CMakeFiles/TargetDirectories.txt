@@ -1,0 +1,3 @@
+/home/alejandro/class_examples/2025_F/Bono/C2/build/CMakeFiles/bouncing_ball.dir
+/home/alejandro/class_examples/2025_F/Bono/C2/build/CMakeFiles/edit_cache.dir
+/home/alejandro/class_examples/2025_F/Bono/C2/build/CMakeFiles/rebuild_cache.dir

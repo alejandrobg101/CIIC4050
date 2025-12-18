@@ -1,0 +1,19 @@
+=== RLE Compression/Decompression Program ===
+
+Phase 1: Generating test file...
+Original file size: 465 bytes
+
+Phase 2: Compressing file...
+Compressed file size: 8 bytes
+
+Phase 3: Decompressing file...
+Decompressed file size: 465 bytes
+
+=== Validation ===
+✓ SUCCESS: Original and decompressed sizes match!
+
+=== Compression Statistics ===
+Original size:      465 bytes
+Compressed size:    8 bytes
+Decompressed size:  465 bytes
+Compression ratio:  58.12:1

@@ -7,8 +7,8 @@ include_directories(include)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(${CMAKE_PROJECT_NAME}
+add_executable(mq_exam_1
    src/main.c)
 
-target_link_libraries(${CMAKE_PROJECT_NAME}
+target_link_libraries(mq_exam_1
    m)

@@ -1,0 +1,62 @@
+=== BUYER PROGRAM STARTING ===
+Creating 3 buyer threads...
+Created buyer thread 1
+Created buyer thread 2
+Buyer 1: Started and connected to shared memory
+Buyer 1: Successfully purchased 4 tickets. 96 tickets remaining.
+Buyer 2: Started and connected to shared memory
+Created buyer thread 3
+All buyer threads created successfully!
+Starting ticket purchases...
+
+Buyer 2: Successfully purchased 4 tickets. 92 tickets remaining.
+Buyer 3: Started and connected to shared memory
+Buyer 3: Successfully purchased 4 tickets. 88 tickets remaining.
+Buyer 1: Successfully purchased 2 tickets. 86 tickets remaining.
+Buyer 2: Successfully purchased 3 tickets. 83 tickets remaining.
+Buyer 3: Successfully purchased 1 tickets. 82 tickets remaining.
+Buyer 1: Successfully purchased 2 tickets. 80 tickets remaining.
+Buyer 2: Successfully purchased 2 tickets. 78 tickets remaining.
+Buyer 3: Successfully purchased 2 tickets. 76 tickets remaining.
+Buyer 1: Successfully purchased 5 tickets. 71 tickets remaining.
+Buyer 3: Successfully purchased 5 tickets. 66 tickets remaining.
+Buyer 2: Successfully purchased 3 tickets. 63 tickets remaining.
+Buyer 1: Successfully purchased 1 tickets. 62 tickets remaining.
+Buyer 3: Successfully purchased 1 tickets. 61 tickets remaining.
+Buyer 2: Successfully purchased 3 tickets. 58 tickets remaining.
+Buyer 1: Successfully purchased 3 tickets. 55 tickets remaining.
+Buyer 3: Successfully purchased 3 tickets. 52 tickets remaining.
+Buyer 2: Successfully purchased 2 tickets. 50 tickets remaining.
+Buyer 1: Successfully purchased 5 tickets. 45 tickets remaining.
+Buyer 3: Successfully purchased 1 tickets. 44 tickets remaining.
+Buyer 2: Successfully purchased 3 tickets. 41 tickets remaining.
+Buyer 1: Successfully purchased 3 tickets. 38 tickets remaining.
+Buyer 3: Successfully purchased 2 tickets. 36 tickets remaining.
+Buyer 2: Successfully purchased 2 tickets. 34 tickets remaining.
+Buyer 1: Successfully purchased 5 tickets. 29 tickets remaining.
+Buyer 3: Successfully purchased 5 tickets. 24 tickets remaining.
+Buyer 2: Successfully purchased 4 tickets. 20 tickets remaining.
+Buyer 1: Successfully purchased 2 tickets. 18 tickets remaining.
+Buyer 3: Successfully purchased 3 tickets. 15 tickets remaining.
+Buyer 2: Successfully purchased 5 tickets. 10 tickets remaining.
+Buyer 1: Successfully purchased 1 tickets. 9 tickets remaining.
+Buyer 3: Successfully purchased 2 tickets. 7 tickets remaining.
+Buyer 2: Successfully purchased 3 tickets. 4 tickets remaining.
+Buyer 1: Successfully purchased 1 tickets. 3 tickets remaining.
+Buyer 3: Successfully purchased 1 tickets. 2 tickets remaining.
+Buyer 2: Failed to purchase 5 tickets. Only 2 tickets available.
+Buyer 1: Failed to purchase 3 tickets. Only 2 tickets available.
+Buyer 2: Failed to purchase 4 tickets. Only 2 tickets available.
+Buyer 3: Failed to purchase 3 tickets. Only 2 tickets available.
+Buyer 1: Successfully purchased 2 tickets. 0 tickets remaining.
+Buyer 3: No more tickets available. Exiting.
+Buyer 2: No more tickets available. Exiting.
+Buyer 3: Disconnected and exiting
+Buyer 2: Disconnected and exiting
+Buyer 1: No more tickets available. Exiting.
+Buyer 1: Disconnected and exiting
+Buyer thread 1 completed
+Buyer thread 2 completed
+Buyer thread 3 completed
+
+=== ALL BUYERS FINISHED ===

@@ -1,6 +1,19 @@
-Data Logger (PID: 53585) is running. Waiting for messages.
-Data Creator (PID: 53584) is running.
+Data Creator (PID: 45726) is running.
+Data Logger (PID: 45727) is running. Waiting for messages.
 Shared memory block '/mem_block_exam_1' created.
 Data Creator: Writing new data to shared memory...
 Data Creator: Writing new data to shared memory...
-kill failed: No such process
+Data Creator: Writing new data to shared memory...
+Data Creator: Writing new data to shared memory...
+Data Creator: Writing new data to shared memory...
+Data Logger is finished.
+Received average: 5.500000
+Received average: 15.500000
+Received average: 25.500000
+Received average: 35.500000
+Received average: 45.500000
+Data Processor: new data available
+Data Processor: new data available
+Data Processor: new data available
+Data Processor: new data available
+Data Processor: new data available

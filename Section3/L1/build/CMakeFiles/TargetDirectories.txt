@@ -1,0 +1,3 @@
+/home/fslabs/os_070_1/Desktop/Lab070/Section3/L1/build/CMakeFiles/horse_race.dir
+/home/fslabs/os_070_1/Desktop/Lab070/Section3/L1/build/CMakeFiles/edit_cache.dir
+/home/fslabs/os_070_1/Desktop/Lab070/Section3/L1/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,5 @@
+Data Logger (PID: 44533) is running. Waiting for messages.
+Data Creator (PID: 44532) is running.
+Shared memory block '/mem_block_exam_1' created.
+Data Creator: Writing new data to shared memory...
+kill failed: No such process
